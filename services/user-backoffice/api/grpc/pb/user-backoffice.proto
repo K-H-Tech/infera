@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package user_backoffice;
+option go_package = "./services/user-backoffice/api/grpc/pb/src/golang;user_backoffice";
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+// ---- Global Swagger metadata ----
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "UserBackoffice Service API"
+    version: "1.0"
+    description: "API for UserBackoffice service"
+    contact: {
+      name: "API Support"
+      url: "https://example.com/support"
+      email: "support@example.com"
+    }
+    license: {
+      name: "Apache 2.0"
+      url: "https://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  }
+  schemes: HTTPS
+  consumes: "application/json"
+  produces: "application/json"
+};
+
+// Example service definition
+service UserBackofficeService {
+  // Example method
+  rpc ExampleMethod(ExampleRequest) returns (ExampleResponse) {
+    option (google.api.http) = {
+      post: "/rest/user/backoffice/example"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Example Method"
+      description: "This is an example method"
+      tags: ["UserBackoffice"]
+    };
+  }
+}
+
+// Example request message
+message ExampleRequest {
+  string param = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Example parameter"
+    required: ["param"]
+  }];
+}
+
+// Example response message
+message ExampleResponse {
+  string result = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Example result"
+  }];
+}

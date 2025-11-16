@@ -103,7 +103,6 @@ func (l *log) Errorf(format string, args ...any) {
 func (l *log) Fatal(args ...any) {
 	if l == nil || l.logger == nil {
 		os.Exit(1)
-		return
 	}
 	if len(args) == 1 {
 		l.logger.Error(fmt.Sprint(args[0]))
@@ -116,7 +115,6 @@ func (l *log) Fatal(args ...any) {
 func (l *log) Fatalf(format string, args ...any) {
 	if l == nil || l.logger == nil {
 		os.Exit(1)
-		return
 	}
 	l.logger.Error(fmt.Sprintf(format, args...))
 	os.Exit(1)

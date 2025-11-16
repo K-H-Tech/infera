@@ -1,0 +1,30 @@
+# Include the centralized Docker build/push template
+include:
+  - project: 'sre/templates'
+    file: '/docker-build.yml'
+
+  - project: 'sre/templates'
+    file: '/update-manifest.yml'
+
+stages:
+  - build
+  - deploy
+
+grpc-gateway-build-image:
+  stage: build
+  extends: .docker-build
+  tags:
+    - Runner-Static       # <-- Specify your runner tag here
+  variables:
+    SERVICE_NAME: grpc-gateway
+    CONTEXT_PATH: services/grpc-gateway
+
+grpc-gateway-deploy:
+  stage: deploy
+  extends: .update-manifests
+  tags:
+    - Runner-Static
+  variables:
+    SERVICE_NAME: grpc-gateway
+    MANIFEST_PATH: ./stage/backend/grpc-gateway
+

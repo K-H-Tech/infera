@@ -1,0 +1,10 @@
+package main
+
+import (
+	"zarinpal-platform/core"
+	"zarinpal-platform/services/{{.ServiceName}}/initializer"
+)
+
+func main() {
+	core.StartService("{{.ServiceName}}", initializer.{{.ServiceNameCamel}}Service{})
+}

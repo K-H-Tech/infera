@@ -1,0 +1,19 @@
+http:
+  address: ":8080"
+grpc:
+  address: ":8081"
+prometheus:
+  address: ":8083"
+jaeger:
+  address: ":4318"
+postgres:
+  host: "localhost"
+  port: 5432
+  user: "zp_platform_user"
+  password: "ZpPlatformPass123"
+  database: "zarinpal_platform_db"
+clients:
+  notification:
+    address: "localhost:9081"
+  user:
+    address: "localhost:9081"

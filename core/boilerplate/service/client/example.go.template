@@ -1,0 +1,37 @@
+package client
+
+import (
+	"context"
+	"zarinpal-platform/core/grpc"
+	"zarinpal-platform/core/logger"
+	"zarinpal-platform/core/trace"
+	pb "zarinpal-platform/services/{{.ServiceName}}/api/grpc/pb/src/golang"
+)
+
+// ExampleServiceClient defines the interface for client operations
+type ExampleServiceClient interface {
+	// Define your client methods here
+	ExampleToDoMethod(ctx context.Context, param string) error
+}
+
+type ExampleServiceClientImpl struct {
+	client pb.{{.ServiceNameCamel}}ServiceClient
+}
+
+func NewExampleServiceClient(address string) ExampleServiceClient {
+	c := &ExampleServiceClientImpl{}
+	cc := grpc.NewClient("example", address)
+	c.client = pb.New{{.ServiceNameCamel}}ServiceClient(cc)
+	return c
+}
+
+// Implement your client methods here
+func (c *ExampleServiceClientImpl) ExampleToDoMethod(ctx context.Context, param string) error {
+	_, span := trace.GetTracer().Start(ctx, "ExampleServiceClient.ExampleToDoMethod")
+	defer span.End()
+
+	// Add implementation here
+	logger.Log.Error("ExampleToDoMethod logger.")
+
+	return nil
+}

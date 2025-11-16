@@ -1,0 +1,11 @@
+http:
+  address: ":8080"
+grpc:
+  address: ":8081"
+prometheus:
+  address: ":8083"
+jaeger:
+  address: ":4318"
+clients:
+   example:
+     address: "localhost:9081"

@@ -1,0 +1,31 @@
+# Include the centralized Docker build/push template
+include:
+  - project: 'sre/templates'
+    file: '/docker-build.yml'
+
+  - project: 'sre/templates'
+    file: '/update-manifest.yml'
+
+stages:
+  - build
+  - deploy
+
+
+user-build-image:
+  stage: build
+  extends: .docker-build
+  tags:
+    - Runner-Static       # <-- Specify your runner tag here
+  variables:
+    SERVICE_NAME: user
+    CONTEXT_PATH: services/user
+
+user-deploy:
+  stage: deploy
+  extends: .update-manifests
+  tags:
+    - Runner-Static
+  variables:
+    SERVICE_NAME: user
+    MANIFEST_PATH: ./stage/backend/user
+

@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package user;
+option go_package = "./services/user/api/grpc/pb/src/golang;user";
+
+service UserService {
+  // Example method
+  rpc MethodCore(ExampleRequest) returns (ExampleResponse);
+  rpc MethodForDashboard(ExampleRequest) returns (ExampleResponse);
+  rpc MethodForBackoffice(ExampleRequest) returns (ExampleResponse);
+  rpc IsShahkarValid(IsShahkarValidRequest) returns (IsShahkarValidResponse);
+}
+
+message IsShahkarValidRequest {
+  string mobile = 1;
+  string national_code = 2;
+}
+
+message IsShahkarValidResponse {
+  bool is_valid = 1;
+}
+// Example request message
+message ExampleRequest {
+  string param = 1;
+}
+
+// Example response message
+message ExampleResponse {
+  string result = 1;
+}

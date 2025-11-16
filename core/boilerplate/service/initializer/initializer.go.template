@@ -1,0 +1,56 @@
+package initializer
+
+import (
+    "context"
+	"zarinpal-platform/core"
+	"zarinpal-platform/pkg/db/postgres"
+	"zarinpal-platform/core/logger"
+	"zarinpal-platform/services/{{.ServiceName}}/api/grpc"
+	pb "zarinpal-platform/services/{{.ServiceName}}/api/grpc/pb/src/golang"
+	"zarinpal-platform/services/{{.ServiceName}}/internal"
+	"zarinpal-platform/services/{{.ServiceName}}/config"
+	"zarinpal-platform/services/{{.ServiceName}}/client"
+	"zarinpal-platform/services/{{.ServiceName}}/data/repository"
+
+	"github.com/jackc/pgx/v5/pgxpool"
+)
+
+type {{.ServiceNameCamel}}Service struct {
+    pgxPool *pgxpool.Pool
+}
+
+func (e *{{.ServiceNameCamel}}Service) OnStart(service *core.Service) {
+    configs := config.GetConfig()
+
+    exampleClient := client.NewExampleServiceClient(configs.Clients.Example.Address)
+
+    pgxPool, err := postgres.NewPgxPoolConnection(context.Background(), &postgres.Config{
+        User:     configs.Postgres.User,
+        Password: configs.Postgres.Password,
+        Host:     configs.Postgres.Host,
+        Port:     configs.Postgres.Port,
+        Database: configs.Postgres.Database,
+    })
+    if err != nil {
+        logger.Log.Fatalf("failed to connect to postgres: %v", err)
+    }
+    e.pgxPool = pgxPool
+
+    exampleRepo := repository.NewExampleRepository(pgxPool)
+
+	// Initialize internal service
+	internalService := internal.New{{.ServiceNameCamel}}Service(exampleRepo,exampleCli)
+
+	// Initialize gRPC handler
+	handler := grpc.New{{.ServiceNameCamel}}Handler(internalService)
+
+	// Register gRPC server
+	pb.Register{{.ServiceNameCamel}}ServiceServer(service.Grpc.Server, handler)
+	service.Grpc.Start()
+}
+
+func (e *{{.ServiceNameCamel}}Service) OnStop() {
+	if e.pgxPool != nil {
+		e.pgxPool.Close()
+	}
+}

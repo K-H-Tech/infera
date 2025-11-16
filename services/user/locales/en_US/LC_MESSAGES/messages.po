@@ -1,0 +1,5 @@
+msgid "Database Error"
+msgstr "Database Error2"
+
+msgid "Your argument are invalid"
+msgstr "Your argument are invalid"

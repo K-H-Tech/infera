@@ -1,0 +1,13 @@
+FROM golang:1.20-alpine AS builder
+
+WORKDIR /app
+COPY . .
+RUN go build -o {{.ServiceName}} services/{{.ServiceName}}/main.go
+
+FROM alpine:latest
+WORKDIR /app
+COPY --from=builder /app/{{.ServiceName}} .
+COPY services/{{.ServiceName}}/config.yaml .
+
+EXPOSE 50051
+CMD ["./{{.ServiceName}}"]

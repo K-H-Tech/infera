@@ -1,0 +1,37 @@
+package internal
+
+import (
+	"context"
+	"zarinpal-platform/core/trace"
+	"zarinpal-platform/services/{{.ServiceName}}/data/repository"
+	"zarinpal-platform/services/{{.ServiceName}}/client"
+)
+
+// {{.ServiceNameCamel}}Service defines the interface for service operations
+type {{.ServiceNameCamel}}Service interface {
+	// Define your service methods here
+	ExampleMethod(ctx context.Context, param string) (string, error)
+}
+
+type {{.ServiceNameCamel}}ServiceImpl struct {
+	exampleRepo repository.ExampleRepository
+	exampleCli client.ExampleServiceClient
+}
+
+// New{{.ServiceNameCamel}}Service creates a new instance of the service
+func New{{.ServiceNameCamel}}Service(exampleRepo repository.ExampleRepository,
+exampleCli client.ExampleServiceClient) {{.ServiceNameCamel}}Service {
+	return &{{.ServiceNameCamel}}ServiceImpl{
+	    exampleRepo: exampleRepo,
+	    exampleCli: exampleCli,
+	}
+}
+
+// Example implementation of service method
+func (s *{{.ServiceNameCamel}}ServiceImpl) ExampleMethod(ctx context.Context, param string) (string, error) {
+	ctx, span := trace.GetTracer().Start(ctx, "{{.ServiceName}}.internal.ExampleMethod")
+	defer span.End()
+
+	// Add your business logic here
+	return "Example response", nil
+}

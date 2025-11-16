@@ -1,12 +1,12 @@
 package repository
 
 import (
-    "context"
-    "log"
-    
+	"context"
+	"log"
+
+	"github.com/jackc/pgx/v5/pgxpool"
 	"zarinpal-platform/core/trace"
 	"zarinpal-platform/services/auth/errors"
-	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 type ExampleRepository interface {
@@ -15,12 +15,12 @@ type ExampleRepository interface {
 }
 
 type exampleRepository struct {
-    db *pgxpool.Pool
+	db *pgxpool.Pool
 }
 
 func NewExampleRepository(dbConnection *pgxpool.Pool) ExampleRepository {
 	repo := &exampleRepository{
-	    db: dbConnection,
+		db: dbConnection,
 	}
 
 	repo.initSchema()
@@ -45,17 +45,16 @@ func (a *exampleRepository) GetRow(ctx context.Context, id int) error {
 	return nil
 }
 
-
 func (a *exampleRepository) initSchema() {
-		query := `
+	query := `
     	CREATE TABLE IF NOT EXISTS example (
     		id BIGSERIAL PRIMARY KEY,
     		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     		updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     	);`
 
-    	_, err := a.db.Exec(context.Background(), query)
-    	if err != nil {
-    		log.Fatalf("Failed to create table: %v", err)
-    	}
+	_, err := a.db.Exec(context.Background(), query)
+	if err != nil {
+		log.Fatalf("Failed to create table: %v", err)
+	}
 }

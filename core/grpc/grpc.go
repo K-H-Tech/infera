@@ -60,7 +60,7 @@ func (g *Grpc) Start() {
 		log.Fatalf("Grpc failed to listen: %v", err)
 		return
 	}
-	log.Println(fmt.Sprintf("Grpc listening on %s", g.Address))
+	log.Printf("Grpc listening on %s", g.Address)
 	go func() {
 		if err := g.Server.Serve(lis); err != nil {
 			logger.Log.Fatalf("grpc failed to serve: %v", err)

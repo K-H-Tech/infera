@@ -5,7 +5,6 @@ import (
 
 	"zarinpal-platform/core/trace"
 	"zarinpal-platform/services/user-backoffice/client"
-	"zarinpal-platform/services/user/errors"
 )
 
 // UserBackofficeService defines the interface for service operations
@@ -30,10 +29,10 @@ func (s *UserBackofficeServiceImpl) ExampleMethod(ctx context.Context, param str
 	ctx, span := trace.GetTracer().Start(ctx, "user-backoffice.domain.ExampleMethod")
 	defer span.End()
 
-	return "", errors.NewAppError(ctx).InvalidArgumentError()
-
+	// Call user service client
 	err := s.userServiceClient.ExampleToDoMethod(ctx, param)
 	if err != nil {
+		span.RecordError(err)
 		return "", err
 	}
 

@@ -71,7 +71,7 @@ func NewTracer(serviceName string, address string) *Tracer {
 		tp:     tp,
 	}
 
-	log.Println(fmt.Sprintf("Jaeger tracer connected on %s", address))
+	log.Printf("Jaeger tracer connected on %s", address)
 	return singleTracer
 }
 

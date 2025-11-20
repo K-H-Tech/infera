@@ -32,7 +32,7 @@ func NewUserService(exampleRepo repository.ExampleRepository, shahkar shahkar.Sh
 
 // Example implementation of domain method
 func (s *userService) ExampleMethod(ctx context.Context, param string) (string, error) {
-	ctx, span := trace.GetTracer().Start(ctx, "UserService.ExampleMethod")
+	_, span := trace.GetTracer().Start(ctx, "UserService.ExampleMethod")
 	defer span.End()
 
 	// Add your business logic here
@@ -40,7 +40,7 @@ func (s *userService) ExampleMethod(ctx context.Context, param string) (string, 
 }
 
 func (s *userService) ExampleMethodForDashboard(ctx context.Context, param string) (string, error) {
-	ctx, span := trace.GetTracer().Start(ctx, "UserService.ExampleMethodForDashboard")
+	_, span := trace.GetTracer().Start(ctx, "UserService.ExampleMethodForDashboard")
 	defer span.End()
 
 	// Add your business logic here
@@ -48,7 +48,7 @@ func (s *userService) ExampleMethodForDashboard(ctx context.Context, param strin
 }
 
 func (s *userService) ExampleMethodForBackoffice(ctx context.Context, param string) (string, error) {
-	ctx, span := trace.GetTracer().Start(ctx, "UserService.ExampleMethodForBackoffice")
+	_, span := trace.GetTracer().Start(ctx, "UserService.ExampleMethodForBackoffice")
 	defer span.End()
 
 	// Add your business logic here

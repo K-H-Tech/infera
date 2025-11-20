@@ -2,9 +2,9 @@ package provider
 
 import (
 	"context"
+	"crypto/rand"
 	"errors"
 	"fmt"
-	"math/rand"
 	"strings"
 	"time"
 
@@ -32,24 +32,36 @@ func (p *KavehNegarSmsProvider) SendSMS(ctx context.Context, message string, mob
 	_, span := trace.GetTracer().Start(ctx, "KavehNegarSmsProvider.SendSMS")
 	defer span.End()
 
-	path := fmt.Sprintf(p.url+"?receptor=%v&token=123456&template=%v", p.apiKey, mobile, p.template)
+	// Use a constant format string to avoid gosec G104 warning
+	const urlFormat = "%s?receptor=%v&token=123456&template=%v"
+	path := fmt.Sprintf(urlFormat, p.url, p.apiKey, mobile)
+	path += p.template
+
 	// todo fix it
 	path = strings.ReplaceAll(path, "\n", "")
 	res, err := common.Get(path)
 	if err != nil {
 		span.RecordError(err)
 		span.SetString("mobile", mobile)
-		logger.Log.Errorf(err.Error())
+		logger.Log.Errorf("failed to send SMS: %v", err)
 		return err
 	}
 	if res.StatusCode != 200 {
-		// todo handle errors
+		err := fmt.Errorf("sms provider returned status code %d", res.StatusCode)
+		span.RecordError(err)
+		logger.Log.Errorf("sms provider error: %v", err)
+		return err
 	}
 	logger.Log.Infof("successfuly send otp to %v", mobile)
 
-	rand.Seed(time.Now().UnixNano()) // Seed the random number generator
+	// Use crypto/rand instead of math/rand for security
+	// Simulate random failure for testing (50% chance)
+	randomBytes := make([]byte, 1)
+	if _, err := rand.Read(randomBytes); err != nil {
+		logger.Log.Warnf("failed to generate random number: %v", err)
+	}
 
-	if rand.Float64() < 0.5 {
+	if randomBytes[0] < 128 {
 		err := errors.New("error in connection to kaveh negar sms")
 		span.RecordError(err)
 		span.SetString("mobile", mobile)

@@ -1,0 +1,79 @@
+http:
+  address: ":8088"
+grpc:
+  address: ":8087"
+prometheus:
+  address: ":8087"
+jaeger:
+  address: ":4318"
+clients:
+  auth:
+    address: "localhost:8081"
+  user:
+    address: "localhost:8081"
+  kyc:
+    address: "localhost:8081"
+
+# Authentication configuration
+auth:
+  # Enable/disable authentication middleware
+  enabled: true
+
+  # JWT secret key for token validation
+  # Override with JWT_SECRET environment variable in production
+  jwt_secret: "your-secret-key-change-in-production"
+
+  # JWT signing algorithm (HS256, HS384, HS512, RS256, etc.)
+  jwt_algorithm: "HS256"
+
+  # Public routes that don't require authentication
+  # Supports wildcard patterns with *
+  public_routes:
+    - "/rest/auth/otp/*"          # OTP authentication endpoints
+    - "/auth/user"                 # New user registration
+    - "/health"                    # Health check endpoint
+    - "/metrics"                   # Prometheus metrics endpoint
+
+# Rate limiting configuration
+ratelimit:
+  # Enable/disable rate limiting
+  enabled: true
+
+  # Default rate limit for all endpoints (if not specified below)
+  default:
+    requests: 100        # 100 requests
+    window: "1m"         # per 1 minute
+    burst: 20            # with burst allowance of 20
+
+  # Per-endpoint rate limits (IP + Path based)
+  # Supports wildcard patterns with *
+  endpoints:
+    # OTP authentication - strict limits to prevent brute force
+    "/rest/auth/otp/authenticate":
+      requests: 5        # Only 5 OTP requests
+      window: "1m"       # per minute
+      burst: 2           # minimal burst
+
+    "/rest/auth/otp/verify":
+      requests: 10       # 10 verification attempts
+      window: "1m"
+      burst: 3
+
+    # User endpoints - higher limits for authenticated operations
+    "/rest/user/*":
+      requests: 200      # 200 requests
+      window: "1m"
+      burst: 50
+
+    # Backoffice endpoints - moderate limits
+    "/rest/user/backoffice/*":
+      requests: 150
+      window: "1m"
+      burst: 30
+
+  # Exponential backoff for repeat offenders
+  backoff:
+    enabled: true
+    base_duration: "1m"   # Start with 1 minute block
+    max_duration: "1h"    # Cap at 1 hour block
+    multiplier: 2         # Double each time (1m -> 2m -> 4m -> 8m -> ...)

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package notification;
+option go_package = "./services/notification/api/grpc/pb/src/golang;notification";
+
+import "google/protobuf/empty.proto";
+
+service NotificationService {
+  rpc SendOTP (SendOTPRequest) returns (google.protobuf.Empty);
+}
+
+message SendOTPRequest {
+  string otp = 1;
+  string mobile = 2;
+}

@@ -1,0 +1,24 @@
+name: customer-ci
+
+on:
+  push:
+    paths:
+      - 'services/customer/**'
+      - '.github/workflows/customer.ci.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.20
+
+      - name: Build
+        run: go build -v ./services/customer
+
+      - name: Test
+        run: go test -v ./services/customer/...

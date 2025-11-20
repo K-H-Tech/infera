@@ -1,0 +1,30 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fa\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.8\n"
+
+msgid "Database Error"
+msgstr "خطای پایگاه داده"
+
+msgid "Your argument are invalid"
+msgstr "استدلال شما نامعتبر است"
+
+msgid "Website name is required"
+msgstr "نام وب‌سایت الزامی است"
+
+msgid "Website URL is required"
+msgstr "آدرس وب‌سایت الزامی است"
+
+msgid "User ID is required"
+msgstr "شناسه کاربر الزامی است"
+
+msgid "Online business created successfully"
+msgstr "کسب‌وکار آنلاین با موفقیت ایجاد شد"

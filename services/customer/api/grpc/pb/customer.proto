@@ -1,0 +1,226 @@
+syntax = "proto3";
+
+package customer;
+option go_package = "./services/customer/api/grpc/pb/src/golang;customer";
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+// ---- Global Swagger metadata ----
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Customer Service API"
+    version: "1.0"
+    description: "API for Customer service"
+    contact: {
+      name: "API Support"
+      url: "https://example.com/support"
+      email: "support@example.com"
+    }
+    license: {
+      name: "Apache 2.0"
+      url: "https://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  }
+  schemes: HTTPS
+  consumes: "application/json"
+  produces: "application/json"
+};
+
+// Customer service definition
+service CustomerService {
+  // Create Online Business
+  rpc CreateOnlineBusiness(CreateOnlineBusinessRequest) returns (CreateOnlineBusinessResponse) {
+    option (google.api.http) = {
+      post: "/rest/customer/online-business"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Create Online Business"
+      description: "Creates a new online business profile with website information"
+      tags: ["Customer"]
+    };
+  }
+
+  // Update Corporate Customer National ID
+  rpc UpdateCorporateCustomerNationalID(UpdateCorporateCustomerNationalIDRequest) returns (UpdateCorporateCustomerNationalIDResponse) {
+    option (google.api.http) = {
+      put: "/rest/customer/corporate/national-id"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Update Corporate Customer National ID"
+      description: "Updates the national ID for a corporate customer"
+      tags: ["Customer"]
+    };
+  }
+
+  // Set Customer As Individual
+  rpc SetCustomerAsIndividual(SetCustomerAsIndividualRequest) returns (SetCustomerAsIndividualResponse) {
+    option (google.api.http) = {
+      post: "/rest/customer/individual"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Set Customer As Individual"
+      description: "Sets a customer as an individual customer type"
+      tags: ["Customer"]
+    };
+  }
+
+  // Update Business Info
+  rpc UpdateBusinessInfo(UpdateBusinessInfoRequest) returns (UpdateBusinessInfoResponse) {
+    option (google.api.http) = {
+      put: "/rest/customer/business-info"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Update Business Info"
+      description: "Updates business information including guild, license, and contact details"
+      tags: ["Customer"]
+    };
+  }
+
+  // Update Financial Data
+  rpc UpdateFinancialData(UpdateFinancialDataRequest) returns (UpdateFinancialDataResponse) {
+    option (google.api.http) = {
+      put: "/rest/customer/financial-data"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Update Financial Data"
+      description: "Updates financial data including tax ID and IBAN"
+      tags: ["Customer"]
+    };
+  }
+
+  // Approve Business
+  rpc ApproveBusiness(ApproveBusinessRequest) returns (ApproveBusinessResponse) {
+    option (google.api.http) = {
+      post: "/rest/customer/business/approve"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Approve Business"
+      description: "Approves a business registration"
+      tags: ["Customer"]
+    };
+  }
+}
+
+// Create Online Business request message
+message CreateOnlineBusinessRequest {
+  string website_name = 1 ;
+  string url = 2;
+  string enamad_id = 3;
+  string user_id = 4;
+}
+
+// Create Online Business response message
+message CreateOnlineBusinessResponse {
+  string customer_id = 1;
+  string business_id = 2;
+}
+
+// Update Corporate Customer National ID request message
+message UpdateCorporateCustomerNationalIDRequest {
+  string customer_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Customer ID to update"
+    required: ["customer_id"]
+  }];
+  string national_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "National ID of the corporate customer"
+    required: ["national_id"]
+  }];
+}
+
+// Update Corporate Customer National ID response message
+message UpdateCorporateCustomerNationalIDResponse {
+  string error = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Error message if any"
+  }];
+}
+
+// Set Customer As Individual request message
+message SetCustomerAsIndividualRequest {
+  string user_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "User ID"
+    required: ["user_id"]
+  }];
+  string customer_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Customer ID to set as individual"
+    required: ["customer_id"]
+  }];
+}
+
+// Set Customer As Individual response message
+message SetCustomerAsIndividualResponse {
+  string error = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Error message if any"
+  }];
+}
+
+// Update Business Info request message
+message UpdateBusinessInfoRequest {
+  string guild = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Business guild/industry"
+    required: ["guild"]
+  }];
+  string license_id = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Business license ID"
+    required: ["license_id"]
+  }];
+  string postal_code = 3 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Postal code"
+    required: ["postal_code"]
+  }];
+  string phone_tech = 4 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Technical phone number"
+    required: ["phone_tech"]
+  }];
+  string phone_business = 5 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Business phone number"
+    required: ["phone_business"]
+  }];
+}
+
+// Update Business Info response message
+message UpdateBusinessInfoResponse {
+  string error = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Error message if any"
+  }];
+}
+
+// Update Financial Data request message
+message UpdateFinancialDataRequest {
+  string tax_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Tax identification number"
+    required: ["tax_id"]
+  }];
+  string iban = 2 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "International Bank Account Number (IBAN)"
+    required: ["iban"]
+  }];
+}
+
+// Update Financial Data response message
+message UpdateFinancialDataResponse {
+  string error = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Error message if any"
+  }];
+}
+
+// Approve Business request message
+message ApproveBusinessRequest {
+  string business_id = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Business ID to approve"
+    required: ["business_id"]
+  }];
+}
+
+// Approve Business response message
+message ApproveBusinessResponse {
+  string error = 1 [(grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+    description: "Error message if any"
+  }];
+}

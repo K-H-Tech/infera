@@ -1,0 +1,17 @@
+msgid "Database Error"
+msgstr "Database Error"
+
+msgid "Your argument are invalid"
+msgstr "Your argument are invalid"
+
+msgid "Website name is required"
+msgstr "Website name is required"
+
+msgid "Website URL is required"
+msgstr "Website URL is required"
+
+msgid "User ID is required"
+msgstr "User ID is required"
+
+msgid "Online business created successfully"
+msgstr "Online business created successfully"

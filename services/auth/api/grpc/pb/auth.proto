@@ -1,0 +1,126 @@
+syntax = "proto3";
+
+package auth;
+option go_package = "./services/auth/api/grpc/pb/src/golang;auth";
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+// ---- Global Swagger metadata ----
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Auth Service API"
+    version: "1.0"
+    description: "API for managing user authentication"
+    contact: {
+      name: "API Support"
+      url: "https://example.com/support"
+      email: "support@example.com"
+    }
+    license: {
+      name: "Apache 2.0"
+      url: "https://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  }
+  schemes: HTTPS
+  consumes: "application/json"
+  produces: "application/json"
+};
+
+service AuthService {
+  rpc AuthenticateWithOTP (AuthenticateWithOTPRequest) returns (AuthenticateWithOTPResponse) {
+    option (google.api.http) = {
+      post: "/rest/auth/otp/authenticate",
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Authenticate with mobile and OTO"
+      description: "Send mobile number to send OTP."
+      tags: "OTP Authentication"
+    };
+  }
+  rpc VerifyOTP (VerifyOTPRequest) returns (VerifyOTPResponse) {
+    option (google.api.http) = {
+      post: "/rest/auth/otp/verify"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Authenticate with mobile and OTO"
+      description: "Send mobile number and OTP to verify."
+      tags: "OTP Authentication"
+    };
+  }
+
+  rpc NewUser (NewUserRequest) returns (NewUserResponse) {
+    option (google.api.http) = {
+      post: "/auth/user"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Create new user"
+      description: "Create new user with name."
+      tags: "User Management"
+    };
+  }
+
+  rpc GetUser (GetUserRequest) returns (GetUserResponse) {
+    option (google.api.http) = {
+      get: "/rest/auth/user/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      summary: "Get user by ID"
+      description: "Retrieve user information by user ID."
+      tags: "User Management"
+    };
+  }
+
+  rpc InternalSync (SyncRequest) returns (SyncResponse);
+}
+
+message AuthenticateWithOTPRequest {
+  string mobile = 1; // Mobile like : 09...
+}
+
+message AuthenticateWithOTPResponse {
+  string expire_at = 1; // Time to expire OTP code
+}
+
+message VerifyOTPRequest {
+  string mobile = 1;
+  string code = 2;
+}
+
+message VerifyOTPResponse {
+  string access_token = 1;
+}
+
+message NewUserRequest {
+  string name = 1;
+}
+
+message NewUserResponse {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+  string created_at = 4;
+  string updated_at = 5;
+}
+
+message GetUserRequest {
+  int32 id = 1;
+}
+
+message GetUserResponse {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+  string created_at = 4;
+  string updated_at = 5;
+}
+
+message SyncRequest {
+  string job = 1;
+}
+
+message SyncResponse {
+  bool success = 1;
+}

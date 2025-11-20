@@ -1,0 +1,32 @@
+package domain
+
+import (
+	"context"
+	"zarinpal-platform/core/trace"
+	"zarinpal-platform/services/{{.ServiceName}}/data/repository"
+)
+
+// {{.ServiceNameCamel}}Service defines the interface for domain operations
+type {{.ServiceNameCamel}}Service interface {
+	ExampleMethod(ctx context.Context, param string) (string, error)
+}
+
+type {{.ServiceNameUnderscore}}Service struct {
+	exampleRepo repository.ExampleRepository
+}
+
+// New{{.ServiceNameCamel}}Service creates a new instance of the domain
+func New{{.ServiceNameCamel}}Service(exampleRepo repository.ExampleRepository) {{.ServiceNameCamel}}Service {
+	return &{{.ServiceNameUnderscore}}Service{
+		exampleRepo: exampleRepo,
+	}
+}
+
+// Example implementation of domain method
+func (s *{{.ServiceNameUnderscore}}Service) ExampleMethod(ctx context.Context, param string) (string, error) {
+	ctx, span := trace.GetTracer().Start(ctx, "{{.ServiceNameCamel}}Service.ExampleMethod")
+	defer span.End()
+
+	// Add your business logic here
+	return "Example response: " + param, nil
+}

@@ -1,0 +1,23 @@
+http:
+  address: ":8080"
+grpc:
+  address: ":8081"
+prometheus:
+  address: ":8083"
+jaeger:
+  address: ":4318"
+postgres:
+  host: "localhost"
+  port: 5432
+  user: "zp_platform_user"
+  password: "ZpPlatformPass123"
+  database: "zarinpal_platform_db"
+
+growthBook:
+  clientKey: "sdk-i906FryScO0OtSlz"
+  apiHost: "http://localhost:3100"
+  pollDatasourceTime: 30s
+
+clients:
+   example:
+     address: "localhost:9081"

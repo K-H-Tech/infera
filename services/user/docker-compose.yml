@@ -1,0 +1,43 @@
+services:
+  postgres:
+    image: docker.arvancloud.ir/postgres:17.6-alpine3.22
+#    container_name: "zp_p_postgres"
+#    platform: linux/amd64
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: zp_platform_user
+      POSTGRES_PASSWORD: ZpPlatformPass123
+      POSTGRES_DB: zarinpal_platform_db
+    networks:
+      - zarinpal_platform_net
+    # restart: always
+  redis:
+    image: docker.arvancloud.ir/redis:8.2.2-alpine3.22
+#    container_name: "zp_p_redis"
+#    platform: linux/amd64
+    networks:
+      - zarinpal_platform_net
+    ports:
+      - "6379:6379"
+
+  mongodb:
+    image: docker.arvancloud.ir/mongo:6
+    restart: always
+    ports:
+      - "27017:27017"
+
+  growthbook:
+    image: growthbook/growthbook:latest
+    container_name: growthbook
+    depends_on:
+      - mongodb
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/growthbook
+    ports:
+      - "3000:3000"   # Web dashboard
+      - "3100:3100"
+    restart: unless-stopped
+networks:
+  zarinpal_platform_net:
+    driver: bridge

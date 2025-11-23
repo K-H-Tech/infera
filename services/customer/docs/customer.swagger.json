@@ -1,0 +1,447 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Customer Service API",
+    "description": "API for Customer service",
+    "version": "1.0",
+    "contact": {
+      "name": "API Support",
+      "url": "https://example.com/support",
+      "email": "support@example.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    {
+      "name": "CustomerService"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/rest/customer/business-info": {
+      "put": {
+        "summary": "Update Business Info",
+        "description": "Updates business information including guild, license, and contact details",
+        "operationId": "CustomerService_UpdateBusinessInfo",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/customerUpdateBusinessInfoResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/customerUpdateBusinessInfoRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Customer"
+        ]
+      }
+    },
+    "/rest/customer/business/approve": {
+      "post": {
+        "summary": "Approve Business",
+        "description": "Approves a business registration",
+        "operationId": "CustomerService_ApproveBusiness",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/customerApproveBusinessResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/customerApproveBusinessRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Customer"
+        ]
+      }
+    },
+    "/rest/customer/corporate/national-id": {
+      "put": {
+        "summary": "Update Corporate Customer National ID",
+        "description": "Updates the national ID for a corporate customer",
+        "operationId": "CustomerService_UpdateCorporateCustomerNationalID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/customerUpdateCorporateCustomerNationalIDResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/customerUpdateCorporateCustomerNationalIDRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Customer"
+        ]
+      }
+    },
+    "/rest/customer/financial-data": {
+      "put": {
+        "summary": "Update Financial Data",
+        "description": "Updates financial data including tax ID and IBAN",
+        "operationId": "CustomerService_UpdateFinancialData",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/customerUpdateFinancialDataResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/customerUpdateFinancialDataRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Customer"
+        ]
+      }
+    },
+    "/rest/customer/individual": {
+      "post": {
+        "summary": "Set Customer As Individual",
+        "description": "Sets a customer as an individual customer type",
+        "operationId": "CustomerService_SetCustomerAsIndividual",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/customerSetCustomerAsIndividualResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/customerSetCustomerAsIndividualRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Customer"
+        ]
+      }
+    },
+    "/rest/customer/online-business": {
+      "post": {
+        "summary": "Create Online Business",
+        "description": "Creates a new online business profile with website information",
+        "operationId": "CustomerService_CreateOnlineBusiness",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/customerCreateOnlineBusinessResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/customerCreateOnlineBusinessRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Customer"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "customerApproveBusinessRequest": {
+      "type": "object",
+      "properties": {
+        "businessId": {
+          "type": "string",
+          "description": "Business ID to approve"
+        }
+      },
+      "title": "Approve Business request message",
+      "required": [
+        "businessId"
+      ]
+    },
+    "customerApproveBusinessResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "description": "Error message if any"
+        }
+      },
+      "title": "Approve Business response message"
+    },
+    "customerCreateOnlineBusinessRequest": {
+      "type": "object",
+      "properties": {
+        "websiteName": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "enamadId": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string"
+        }
+      },
+      "title": "Create Online Business request message"
+    },
+    "customerCreateOnlineBusinessResponse": {
+      "type": "object",
+      "properties": {
+        "customerId": {
+          "type": "string"
+        },
+        "businessId": {
+          "type": "string"
+        }
+      },
+      "title": "Create Online Business response message"
+    },
+    "customerSetCustomerAsIndividualRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "User ID"
+        },
+        "customerId": {
+          "type": "string",
+          "description": "Customer ID to set as individual"
+        }
+      },
+      "title": "Set Customer As Individual request message",
+      "required": [
+        "userId",
+        "customerId"
+      ]
+    },
+    "customerSetCustomerAsIndividualResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "description": "Error message if any"
+        }
+      },
+      "title": "Set Customer As Individual response message"
+    },
+    "customerUpdateBusinessInfoRequest": {
+      "type": "object",
+      "properties": {
+        "guild": {
+          "type": "string",
+          "description": "Business guild/industry"
+        },
+        "licenseId": {
+          "type": "string",
+          "description": "Business license ID"
+        },
+        "postalCode": {
+          "type": "string",
+          "description": "Postal code"
+        },
+        "phoneTech": {
+          "type": "string",
+          "description": "Technical phone number"
+        },
+        "phoneBusiness": {
+          "type": "string",
+          "description": "Business phone number"
+        }
+      },
+      "title": "Update Business Info request message",
+      "required": [
+        "guild",
+        "licenseId",
+        "postalCode",
+        "phoneTech",
+        "phoneBusiness"
+      ]
+    },
+    "customerUpdateBusinessInfoResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "description": "Error message if any"
+        }
+      },
+      "title": "Update Business Info response message"
+    },
+    "customerUpdateCorporateCustomerNationalIDRequest": {
+      "type": "object",
+      "properties": {
+        "customerId": {
+          "type": "string",
+          "description": "Customer ID to update"
+        },
+        "nationalId": {
+          "type": "string",
+          "description": "National ID of the corporate customer"
+        }
+      },
+      "title": "Update Corporate Customer National ID request message",
+      "required": [
+        "customerId",
+        "nationalId"
+      ]
+    },
+    "customerUpdateCorporateCustomerNationalIDResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "description": "Error message if any"
+        }
+      },
+      "title": "Update Corporate Customer National ID response message"
+    },
+    "customerUpdateFinancialDataRequest": {
+      "type": "object",
+      "properties": {
+        "taxId": {
+          "type": "string",
+          "description": "Tax identification number"
+        },
+        "iban": {
+          "type": "string",
+          "description": "International Bank Account Number (IBAN)"
+        }
+      },
+      "title": "Update Financial Data request message",
+      "required": [
+        "taxId",
+        "iban"
+      ]
+    },
+    "customerUpdateFinancialDataResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string",
+          "description": "Error message if any"
+        }
+      },
+      "title": "Update Financial Data response message"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

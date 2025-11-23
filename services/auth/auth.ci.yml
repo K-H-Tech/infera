@@ -1,0 +1,31 @@
+# Include the centralized Docker build/push template
+include:
+  - project: 'sre/templates'
+    file: '/docker-build.yml'
+
+  - project: 'sre/templates'
+    file: '/update-manifest.yml'
+
+stages:
+  - build
+  - deploy
+  
+
+auth-build-image:
+  stage: build
+  extends: .docker-build
+  tags:
+    - Runner-Static       # <-- Specify your runner tag here
+  variables:
+    SERVICE_NAME: auth
+    CONTEXT_PATH: services/auth
+
+auth-deploy:
+  stage: deploy
+  extends: .update-manifests
+  tags:
+    - Runner-Static
+  variables:
+    SERVICE_NAME: auth
+    MANIFEST_PATH: ./stage/backend/auth
+

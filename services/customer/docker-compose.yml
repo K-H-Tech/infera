@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  customer:
+    build:
+      context: ../..
+      dockerfile: services/customer/Dockerfile
+    container_name: customer-service
+    ports:
+      - "8081:8081"  # gRPC
+      - "8080:8080"  # HTTP
+      - "8083:8083"  # Prometheus
+    environment:
+      - CONFIG_PATH=/app/config.yaml
+    volumes:
+      - ./config.yaml:/app/config.yaml
+    networks:
+      - zarinpal-network
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: customer-postgres
+    environment:
+      POSTGRES_USER: zp_platform_user
+      POSTGRES_PASSWORD: ZpPlatformPass123
+      POSTGRES_DB: zarinpal_platform_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - zarinpal-network
+
+networks:
+  zarinpal-network:
+    driver: bridge
+
+volumes:
+  postgres-data:

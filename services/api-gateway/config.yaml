@@ -33,6 +33,8 @@ auth:
     - "/auth/user"                 # New user registration
     - "/health"                    # Health check endpoint
     - "/metrics"                   # Prometheus metrics endpoint
+    - "/docs"                      # Documentation index
+    - "/docs/*"                    # All documentation endpoints
 
 # Rate limiting configuration
 ratelimit:
@@ -77,3 +79,18 @@ ratelimit:
     base_duration: "1m"   # Start with 1 minute block
     max_duration: "1h"    # Cap at 1 hour block
     multiplier: 2         # Double each time (1m -> 2m -> 4m -> 8m -> ...)
+
+# Documentation proxy configuration
+docs:
+  # Enable/disable documentation reverse proxy
+  enabled: true
+
+  # Services with their documentation endpoints
+  # Gateway will proxy /docs/{service-name}/swagger-ui to the backend service
+  services:
+    auth:
+      url: "http://localhost:8080"           # Auth service HTTP address
+    user-dashboard:
+      url: "http://localhost:8080"           # User dashboard service HTTP address
+    user-backoffice:
+      url: "http://localhost:8080"           # User backoffice service HTTP address

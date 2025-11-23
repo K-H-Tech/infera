@@ -9,6 +9,7 @@ import (
 	"zarinpal-platform/core/logger"
 	"zarinpal-platform/services/api-gateway/config"
 	"zarinpal-platform/services/api-gateway/middleware"
+	"zarinpal-platform/services/api-gateway/proxy"
 	"zarinpal-platform/services/api-gateway/ratelimit"
 	"zarinpal-platform/services/api-gateway/validator"
 	auth "zarinpal-platform/services/auth/api/grpc/pb/src/golang"
@@ -116,6 +117,26 @@ func (s APIGatewayService) OnStart(service *core.Service) {
 		}
 	} else {
 		logger.Log.Warn("Authentication middleware is DISABLED - all routes are public")
+	}
+
+	// Setup documentation reverse proxy if enabled
+	if configs.Docs.Enabled {
+		logger.Log.Info("Documentation proxy is ENABLED")
+
+		docsProxy, err := proxy.NewDocsProxy(configs.Docs)
+		if err != nil {
+			logger.Log.Fatalf("failed to create docs proxy: %v", err)
+		}
+
+		// Register docs routes on the Gorilla router
+		docsProxy.RegisterRoutes(service.Http.Engine)
+
+		logger.Log.Infof("Documentation proxy configured for %d services", len(configs.Docs.Services))
+		for name := range configs.Docs.Services {
+			logger.Log.Infof("  - /docs/%s/swagger-ui", name)
+		}
+	} else {
+		logger.Log.Warn("Documentation proxy is DISABLED")
 	}
 
 	logger.Log.Info("API Gateway initialization complete")

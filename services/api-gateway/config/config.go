@@ -14,6 +14,7 @@ type Config struct {
 	Clients    ClientsSection    `yaml:"clients"`
 	Auth       AuthSection       `yaml:"auth"`
 	RateLimit  RateLimitSection  `yaml:"ratelimit"`
+	Docs       DocsSection       `yaml:"docs"`
 }
 
 type HttpSection struct {
@@ -70,6 +71,17 @@ type RateLimitBackoffConfig struct {
 	BaseDuration string `yaml:"base_duration"` // e.g., "1m"
 	MaxDuration  string `yaml:"max_duration"`  // e.g., "1h"
 	Multiplier   int    `yaml:"multiplier"`    // e.g., 2
+}
+
+// DocsSection holds documentation proxy configuration
+type DocsSection struct {
+	Enabled  bool                   `yaml:"enabled"`
+	Services map[string]DocsService `yaml:"services"`
+}
+
+// DocsService holds the backend URL for a service's documentation
+type DocsService struct {
+	URL string `yaml:"url"` // Base HTTP URL of the service (e.g., "http://localhost:8080")
 }
 
 func GetConfig() *Config {
